@@ -13,8 +13,8 @@ VETARGS?=-asmdecl -atomic -bool -buildtags -copylocks -methods -nilfunc -printf 
 
 default: build
 
-
 mod:
+	go mod tidy
 	@echo "--> Downloading dependencies"
 	go mod download
 
