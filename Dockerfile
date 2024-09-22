@@ -1,8 +1,4 @@
-# Create a .dockerignore file with the following content
-# .dockerignore
-.git
 
-# Dockerfile
 FROM docker.io/library/golang:1.23.1-alpine3.20 as builder
 
 # Install 'make' and other necessary build tools
