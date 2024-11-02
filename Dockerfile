@@ -1,5 +1,5 @@
 
-FROM docker.io/library/golang:1.23.1-alpine3.20 as builder
+FROM docker.io/library/golang:1.23.2-alpine3.20 as builder
 
 # Install 'make' and other necessary build tools
 RUN apk add --no-cache make gcc musl-dev git

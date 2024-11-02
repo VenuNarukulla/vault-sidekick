@@ -1,8 +1,8 @@
 module github.com/indicalabs/vault-sidekick
 
-go 1.21
+go 1.23.2
 
-toolchain go1.21.8
+toolchain go1.23.2
 
 require (
 	github.com/golang/glog v1.2.2
