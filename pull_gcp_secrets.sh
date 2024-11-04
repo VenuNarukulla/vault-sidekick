@@ -22,6 +22,12 @@ mkdir -p "$SECRETS_DIR" || {
     exit 1
 }
 
+# Write the Vault token to vault-auth.yaml
+cat <<EOF > "${SECRETS_DIR}/vault-auth.yaml"
+method: token
+token: ${VAULT_TOKEN}
+EOF
+
 # Pull secrets and save to individual files
 vault-sidekick -one-shot \
       -output="${SECRETS_DIR}" \
