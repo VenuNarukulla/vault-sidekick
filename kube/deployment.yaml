@@ -9,7 +9,7 @@ spec:
       labels:
         name: vault-sidekick
       annotations:
-        build: https://github.com/UKHomeOffice/vault-sidekick
+        build: https://github.com/indicalabs/vault-sidekick
     spec:
       containers:
       - name: sidekick
