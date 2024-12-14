@@ -25,15 +25,6 @@ ENV PATH="/vault-sidekick/bin:${PATH}"
 
 RUN chmod 755 /vault-sidekick
 
-# Copy pull scripts to /usr/local/bin and set execute permissions
-COPY pull_aws_secrets.sh /usr/local/bin/pull_aws_secrets.sh
-COPY pull_gcp_secrets.sh /usr/local/bin/pull_gcp_secrets.sh
-COPY pull_azure_secrets.sh /usr/local/bin/pull_azure_secrets.sh
-
-RUN chmod +x /usr/local/bin/pull_aws_secrets.sh \
-    /usr/local/bin/pull_gcp_secrets.sh \
-    /usr/local/bin/pull_azure_secrets.sh
-
 USER vault
 
 ENTRYPOINT ["vault-sidekick"]
