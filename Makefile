@@ -1,6 +1,6 @@
 
 NAME=vault-sidekick
-AUTHOR ?= indicalabs
+AUTHOR ?= ukhomeofficedigital
 REGISTRY ?= quay.io
 GOVERSION ?= 1.23.1
 HARDWARE=$(shell uname -m)
@@ -31,8 +31,8 @@ static: mod
 docker-build:
 	@echo "--> Compiling the project"
 	${SUDO} docker run --rm \
-		-v ${PWD}:/go/src/github.com/indicalabs/${NAME} \
-		-w /go/src/github.com/indicalabs/${NAME} \
+		-v ${PWD}:/go/src/github.com/UKHomeOffice/${NAME} \
+		-w /go/src/github.com/UKHomeOffice/${NAME} \
 		-e GOOS=linux \
 		golang:${GOVERSION} \
 		make static

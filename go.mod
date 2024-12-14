@@ -1,4 +1,4 @@
-module github.com/indicalabs/vault-sidekick
+module github.com/walton-io/vault-sidekick
 
 go 1.23.2
 
