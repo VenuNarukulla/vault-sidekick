@@ -95,6 +95,7 @@ func writeCAChain(filename string, data map[string]interface{}, mode os.FileMode
 
 	return nil
 }
+
 func writeCertificateFile(filename string, data map[string]interface{}, mode os.FileMode) error {
 	if err := writeCAChain(filename, data, mode); err != nil {
 		glog.Errorf("failed to write CA chain: %s", err)
@@ -121,7 +122,6 @@ func writeCertificateFile(filename string, data map[string]interface{}, mode os.
 	}
 
 	return nil
-
 }
 
 func writeCertificateBundleFile(filename string, data map[string]interface{}, mode os.FileMode) error {
@@ -199,6 +199,20 @@ func generateAwsCredentialFile(data map[string]interface{}) []byte {
 	}
 
 	return []byte(fmt.Sprintf("%s\n%s\n%s\n", profileName, accessKey, secretKey))
+}
+
+func writeAzureCredentialFile(filename string, data map[string]interface{}, mode os.FileMode) error {
+	// Construct the Azure credential content
+	// These are the required fields for a Service Principal
+	clientID := fmt.Sprintf("client_id=%s", data["client_id"])
+	clientSecret := fmt.Sprintf("client_secret=%s", data["client_secret"])
+
+	// Optional, only if using MSI or a specific use case where tenant_id is required
+	tenantID := fmt.Sprintf("tenant_id=%s", data["tenant_id"])
+
+	// Write to file
+	content := fmt.Sprintf("%s\n%s\n%s\n", clientID, clientSecret, tenantID)
+	return writeFile(filename, []byte(content), mode)
 }
 
 func writeTxtFile(filename string, data map[string]interface{}, mode os.FileMode) error {

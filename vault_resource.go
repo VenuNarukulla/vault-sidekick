@@ -59,7 +59,7 @@ const (
 )
 
 var (
-	resourceFormatRegex = regexp.MustCompile("^(yaml|yml|json|env|ini|txt|cert|bundle|csv|template|credential|aws)$")
+	resourceFormatRegex = regexp.MustCompile("^(yaml|yml|json|env|ini|txt|cert|bundle|csv|template|credential|aws|azure)$")
 
 	// a map of valid resource to retrieve from vault
 	validResources = map[string]bool{
@@ -76,6 +76,7 @@ var (
 		"cassandra": true,
 		"ssh":       true,
 		"database":  true,
+		"azure":     true, // Added Azure as a valid resource type
 	}
 )
 
@@ -179,6 +180,16 @@ func (r *VaultResource) isValidResource() error {
 		}
 		if _, found := r.options["cert_type"]; !found {
 			return fmt.Errorf("ssh resource requires cert_type to be either host or user")
+		}
+	}
+
+	// Azure-specific validation (optional depending on your use case)
+	if r.resource == "azure" {
+		if _, found := r.options["client_id"]; !found {
+			return fmt.Errorf("azure resource requires a client_id option")
+		}
+		if _, found := r.options["tenant_id"]; !found {
+			return fmt.Errorf("azure resource requires a tenant_id option")
 		}
 	}
 

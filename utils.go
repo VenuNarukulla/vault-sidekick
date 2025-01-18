@@ -166,6 +166,58 @@ func fileExists(filename string) (bool, error) {
 	return true, nil
 }
 
+// getAzureRole retrieves the Azure role from environment variables or file
+func getAzureRole(cfg *vaultAuthOptions) string {
+	role := os.Getenv("VAULT_SIDEKICK_ROLE_ID")
+	if cfg.FileName != "" {
+		content, err := readConfigFile(cfg.FileName, cfg.FileFormat)
+		if err != nil {
+			return ""
+		}
+
+		role = content.RoleID
+	}
+	return role
+}
+
+// getAzureToken retrieves the Azure Managed Identity token for authentication
+func getAzureToken() (string, error) {
+	// Fetch the Azure Managed Identity token
+	url := "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://vault.azure.net"
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Set("Metadata", "true")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var response map[string]interface{}
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return "", err
+	}
+
+	token, found := response["access_token"].(string)
+	if !found {
+		return "", fmt.Errorf("access_token not found in response")
+	}
+
+	return token, nil
+}
+
 // processResource is responsible for generating the specific content from the resource
 // 	rn		: a point to the vault resource
 //	data		: a map of the related secret associated to the resource
@@ -201,6 +253,8 @@ func processResource(rn *VaultResource, data map[string]interface{}) (err error)
 		err = writeTemplateFile(filename, data, rn.fileMode, rn.templateFile)
 	case "aws":
 		err = writeAwsCredentialFile(filename, data, rn.fileMode)
+	case "azure":  // Added Azure credential processing
+		err = writeAzureCredentialFile(filename, data, rn.fileMode)
 	default:
 		return fmt.Errorf("unknown output format: %s", rn.format)
 	}

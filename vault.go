@@ -406,6 +406,8 @@ func (r VaultService) get(rn *watchedResource) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "azure":
+	    fallthrough
 	case "mysql":
 		fallthrough
 	case "postgres":
@@ -504,6 +506,8 @@ func newVaultClient(opts *config) (*api.Client, error) {
 		token, err = NewAWSEC2Plugin(client).Create(opts.vaultAuthOptions)
 	case "gcp-gce":
 		token, err = NewGCPGCEPlugin(client).Create(opts.vaultAuthOptions)
+	case "azure":
+		token, err = NewAzurePlugin(client).Create(opts.vaultAuthOptions)  // Added this case
 	case "kubernetes":
 		token, err = NewKubernetesPlugin(client).Create(opts.vaultAuthOptions)
 	case "token":
