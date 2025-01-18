@@ -29,6 +29,7 @@ import (
 
 	"os/exec"
 	"path/filepath"
+    "net/http"
 
 	"github.com/golang/glog"
 	"gopkg.in/yaml.v2"

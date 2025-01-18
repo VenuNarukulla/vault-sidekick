@@ -1,12 +1,11 @@
 package main
 
 import (
-	"bytes"
+	"encoding/json" // Added this import to fix the json.Unmarshal() usage
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/hashicorp/vault/api"
 )
