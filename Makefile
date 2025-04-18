@@ -1,8 +1,8 @@
 
 NAME=vault-sidekick
 AUTHOR ?= indicalabs
-REGISTRY ?= quay.io
-GOVERSION ?= 1.23.1
+REGISTRY ?= docker.io
+GOVERSION ?= 1.24.2
 HARDWARE=$(shell uname -m)
 VERSION ?= $(shell awk '/release =/ { print $$3 }' main.go | sed 's/"//g')
 GIT_SHA=$(shell git --no-pager describe --always --dirty)
