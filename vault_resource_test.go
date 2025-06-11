@@ -34,13 +34,20 @@ func TestResourceFilename(t *testing.T) {
 func TestIsValid(t *testing.T) {
 	resource := defaultVaultResource()
 	resource.path = "/test/name"
-	resource.resource = "secret"
 
+	resource.resource = "secret"
 	assert.Nil(t, resource.IsValid())
+
+	resource.resource = "kvv2"
+	assert.Nil(t, resource.IsValid())
+
 	resource.resource = "nothing"
 	assert.NotNil(t, resource.IsValid())
+
 	resource.resource = "pki"
 	assert.NotNil(t, resource.IsValid())
+
 	resource.resource = "ssh"
 	assert.NotNil(t, resource.IsValid())
 }
+

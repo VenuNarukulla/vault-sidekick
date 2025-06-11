@@ -41,6 +41,10 @@ func TestSetResources(t *testing.T) {
 	assert.NotNil(t, items.Set("secret::file=filename.test,fmt=yaml"))
 	assert.NotNil(t, items.Set("secret:te1st:file=filename.test,fmt="))
 	assert.NotNil(t, items.Set("file=filename.test,fmt=yaml"))
+
+    assert.Nil(t, items.Set("kvv2:test:file=filename.test,fmt=yaml"))
+    assert.Nil(t, items.Set("kvv2:/db/prod/username"))
+
 }
 
 func TestSetEnvironmentResource(t *testing.T) {
@@ -82,6 +86,13 @@ func TestSetEnvironmentResource(t *testing.T) {
 				"KUBERNETES_NAMESPACE": "dev",
 			},
 		},
+		{
+            ResourceText: "kvv2:secrets/${ENV}/stuff:file=filename.test,fmt=yaml",
+            ExpectedPath: "secrets/dev/stuff",
+            Vars: map[string]string{
+                "ENV": "dev",
+            },
+        },
 	}
 
 	for i, c := range tests {
